@@ -54,6 +54,12 @@ export default function Navbar() {
                         "Authorization": `Bearer ${token}`
                     }
                 });
+
+                if(response.status === 403){
+                    console.error("403: Unauthorized Token expired or invalid");
+                    logout()
+                    return
+                }
                 const data = await response.json();
                 setCartCount(data.totalItems || 0);
             } catch (error) {
