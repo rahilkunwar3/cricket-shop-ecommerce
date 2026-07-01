@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import {FaStar, FaRegStar, FaStarHalfAlt} from 'react-icons/fa'; 
 import { useState ,useEffect } from "react";
+import { motion, easeOut } from "framer-motion";
 
 
 export default function ProductCard({product}) {
@@ -27,9 +28,30 @@ export default function ProductCard({product}) {
         )
     }
 
+    // Animation variants
+    const cardVariants = {
+        hidden:{
+            opacity: 0,
+            y: 50
+        },
+        visible:{
+            opacity: 1,
+            y: 0,
+            transition:{
+                duration: 0.5,
+                ease: easeOut
+            }
+        }
+    };
+
     return(  
         <Link href={`/product/${product._id}`}>
-          <div key={product._id} className="bg-white rounded-lg shadow overflow-hidden">
+          <motion.div 
+            variants={cardVariants}
+            initial = "hidden"
+            animate = "visible"
+            whileHover={{scale:1.03, transition:{duration:0.2}}}
+            key={product._id} className="bg-white rounded-lg shadow overflow-hidden">
                     <div className="relative h-48 w-full bg-gray-100">
                         <Image src={product.image} alt={product.name} fill sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"/>
                         {product.originalPrice && (
@@ -61,7 +83,7 @@ export default function ProductCard({product}) {
                                 )}
                             </div>
                         )}
-                        <div className="mt-2 ">
+                        <div className="mt-2 items-center gap-2">
                             <span className="text-lg font-bold text-yellow-600">
                                 ₹{product.price.toLocaleString('en-IN')}
                             </span>
@@ -71,8 +93,25 @@ export default function ProductCard({product}) {
                                 </span>
                             )}
                         </div>
+                        <div className="mt-3 flex gap-2">
+                            <button onClick={(e)=>{
+                                e.preventDefault();
+                                console.log('Add to cart:', product.name);
+                                alert(`${product.name} added to cart!`);
+                            }} className="flex-1 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 text-sm ">
+                                {product.stock > 0 ? 'Add to Cart' : 'Out of Stock'}
+                            </button>
+                            <Link href={`/product/${product._id}`} className="flex-1">
+                            <button 
+                                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-200 text-sm"
+                            >
+                                View
+                            </button>
+                        </Link>
+
+                        </div>
                     </div>
-                </div>   
+                </motion.div>   
         </Link>    
     )
 }
