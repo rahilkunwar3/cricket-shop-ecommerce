@@ -4,6 +4,7 @@ const productSchema = new mangoose.Schema({
     name:{type:String, required:true},
     description:{type:String},
     price:{type:Number, required:true},
+    originalPrice:{type:Number, required:true},
     category:{type:String, required:true, enum:['Bats', 'Balls', 'Gloves', 'Stumps', 'Protective Gear', 'Clothing', 'Footwear', 'Accessories']},
     brand:{type:String,required:true},
     image:{type:String,required:true},
