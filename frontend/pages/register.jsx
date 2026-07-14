@@ -134,8 +134,6 @@ export default function Register() {
             return;
         }
 
-        
-
         if(!(validatePassword(password))){
             setError("Password show be atleast 8 character with one uppercase, one lowercase, one number and one special character");
             return;
